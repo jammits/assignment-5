@@ -6,41 +6,53 @@ import java.util.stream.Collectors;
 
 public class CustomArrayList<T> implements CustomList<T> {
 	Object[] items = new Object[10];
-
+	private int size = 0;
 	@Override
 	public boolean add(T item) {
 		if (item == null) {
 			return false;
 		}
-		else {
-			if ((this.getSize() - 1) < (items.length - 1)) {
-				items[this.getSize()] = item;
-			}
-			else if ((this.getSize() - 1) == (items.length - 1)) {
-				Object[] moreItems = new Object[items.length * 2];
 
-				Arrays.stream(items)
-						.collect(Collectors.toList())
-						.toArray(moreItems);
-
-				//Make original array reference new array with copy of data
-				items = moreItems;
-				//Add item requested into array
-				items[this.getSize()] = item;
-			}
-			return true;
+		if (size == items.length) {
+			items = Arrays.copyOf(items, items.length * 2);
 		}
+
+		items[size] = item;
+
+		size++;
+
+		return true;
+//		else {
+//
+//			if ((this.getSize() - 1) < (items.length - 1)) {
+//				items[this.getSize()] = item;
+//			}
+//			else if ((this.getSize() - 1) == (items.length - 1)) {
+//				Object[] moreItems = new Object[items.length * 2];
+//
+//				Arrays.stream(items)
+//						.collect(Collectors.toList())
+//						.toArray(moreItems);
+//
+//				//Make original array reference new array with copy of data
+//				items = moreItems;
+//				//Add item requested into array
+//				items[this.getSize()] = item;
+//			}
+//			return true;
+//		}
 
 	}
 
 	@Override
 	public int getSize() {
 
-		long numOfElements = Arrays.stream(items)
-				.filter(Objects::nonNull)
-				.count();
-
-		return (int) numOfElements;
+		return this.size;
+//		long numOfElements = Arrays.stream(items)
+//				.filter(Objects::nonNull)
+//				.count();
+//
+//		return (int) numOfElements;
 	}
 
 	@Override
